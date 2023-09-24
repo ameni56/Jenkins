@@ -1,26 +1,38 @@
 pipeline {
-    agent any
+    agent any // Spécifie l'agent sur lequel le pipeline sera exécuté (n'importe quel agent disponible).
 
     stages {
-        stage('Git Checkout') {
+        stage('Checkout') {
             steps {
-                // Checkout the Git repository
-                git 'https://github.com/ameni56/Jenkins.git'
+                // Étape pour récupérer le code source du référentiel Git
+                checkout scm
             }
         }
 
-        stage('Maven Build') {
+        stage('Build') {
             steps {
-                // Use Maven wrapper if available, or use a specific Maven installation
-                sh './mvnw clean package || mvn clean package'
+                // Étape pour construire votre projet Maven
+                sh 'mvn clean package' // Exemple de commande de construction
             }
         }
 
-        stage('Maven Test') {
+        stage('Test') {
             steps {
-                // Use Maven wrapper if available, or use a specific Maven installation
-                sh './mvnw test || mvn test'
+                // Étape pour exécuter des tests Maven
+                sh 'mvn test' // Exemple de commande de test
             }
+        }
+    }
+
+    post {
+        success {
+            // Étape exécutée en cas de succès du pipeline
+            echo 'Le pipeline a réussi !'
+        }
+
+        failure {
+            // Étape exécutée en cas d'échec du pipeline
+            echo 'Le pipeline a échoué.'
         }
     }
 }
