@@ -1,38 +1,25 @@
 pipeline {
-    agent any // Spécifie l'agent sur lequel le pipeline sera exécuté (n'importe quel agent disponible).
-
+    agent any
     stages {
-        stage('Checkout') {
+        stage('Récupération du code source depuis Git') {
             steps {
-                // Étape pour récupérer le code source du référentiel Git
+                // Récupérer le code source depuis Git
                 checkout scm
             }
         }
-
-        stage('Build') {
+        stage('Affichage de la date système') {
             steps {
-                // Étape pour construire votre projet Maven
-                sh 'mvn clean package' // Exemple de commande de construction
-            }
-        }
-
-        stage('Test') {
-            steps {
-                // Étape pour exécuter des tests Maven
-                sh 'mvn test' // Exemple de commande de test
+                // Afficher la date système
+                sh 'date'
             }
         }
     }
-
     post {
         success {
-            // Étape exécutée en cas de succès du pipeline
-            echo 'Le pipeline a réussi !'
+            // Actions à effectuer en cas de succès
         }
-
         failure {
-            // Étape exécutée en cas d'échec du pipeline
-            echo 'Le pipeline a échoué.'
+            // Actions à effectuer en cas d'échec
         }
     }
 }
